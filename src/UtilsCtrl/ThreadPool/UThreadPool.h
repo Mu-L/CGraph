@@ -199,8 +199,8 @@ protected:
 
 private:
     CBool is_init_ { false };                                                       // 是否初始化
-    std::atomic<CInt> cur_index_ { 0 };                                          // 记录放入的线程数
-    UAtomicQueue<UTask> task_queue_;                                                // 用于存放普通任务
+    std::atomic<CIndex> cur_index_ { 0 };                                        // 记录被轮询到的线程index的位置
+    UAtomicQueue<UTask> task_queue_ {};                                             // 用于存放普通任务
     UAtomicPriorityQueue<UTask> priority_task_queue_;                               // 运行时间较长的任务队列，仅在辅助线程中执行
     std::vector<UThreadPrimaryPtr> primary_threads_;                                // 记录所有的主线程
     std::list<std::unique_ptr<UThreadSecondary>> secondary_threads_;                // 用于记录所有的辅助线程

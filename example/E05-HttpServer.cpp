@@ -42,7 +42,6 @@ class ProcessNode : public GNode {
     CStatus run() override {
         auto param = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(HttpParam, EXAMPLE_PARAM_KEY);
         {
-            // 从这里可以看出来，manager 中的每个pipeline，实际上都是
             CGRAPH_PARAM_WRITE_CODE_BLOCK(param);
             CGRAPH_ECHO("process step %d, sleep %d ms, val is %d, loop is %d",
                 STEP, MS, ++param->val_, ++param->loop_);
