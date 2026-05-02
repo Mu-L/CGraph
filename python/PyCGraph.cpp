@@ -163,7 +163,15 @@ PYBIND11_MODULE(pycgraph, cg) {
         .def("unlock", &GParam::unlock,
              py::call_guard<py::gil_scoped_release>())
         .def("tryLock", &GParam::tryLock,
-             py::call_guard<py::gil_scoped_release>());
+             py::call_guard<py::gil_scoped_release>())
+        .def("__enter__", [](GParam& self) -> GParam& {
+                self.lock();
+                return self;
+            }, py::call_guard<py::gil_scoped_release>(), py::return_value_policy::reference_internal)
+        .def("__exit__", [](GParam& self, py::object, py::object, py::object) {
+                self.unlock();
+                return false;
+            }, py::call_guard<py::gil_scoped_release>());
 
     py::class_<GPassedParam, PywGPassedParam, std::unique_ptr<GPassedParam, py::nodelete> >(cg, "GPassedParam")
         .def(py::init<>());

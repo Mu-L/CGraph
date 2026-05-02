@@ -13,8 +13,12 @@ from MyParams.MyParam import MyParam
 
 class MyReadParamNode(GNode):
     def run(self):
-        param = self.getGParamWithNoEmpty("param1")
-        param.lock()
-        print('[{0}] value is {1}, count is {2}'.format(self.getName(), param.value, param.count))
-        param.unlock()
+        param: MyParam = self.getGParamWithNoEmpty("param1")
+
+        # use `with param:` as same as:
+        # param.lock()
+        # print('[{0}] value is {1}, count is {2}'.format(self.getName(), param.value, param.count))
+        # param.unlock()
+        with param:
+            print('[{0}] value is {1}, count is {2}'.format(self.getName(), param.value, param.count))
         return CStatus()
