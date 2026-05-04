@@ -38,14 +38,14 @@ public:                                                                         
     explicit PCGG##Interface(const CGraph::GElementPtrArr& elements = CGraph::GElementPtrArr{}) : PCGG(elements) {}; \
     ~PCGG##Interface() override = default;                                                \
 protected:                                                                                \
-    PYCGRAPH_DECLARE_GELEMENT_COMMON_FUNCTIONS(PCGG##Interface)                           \
+    PYCGRAPH_DECLARE_GELEMENT_COMMON_FUNCTIONS(PCGG)                                      \
     PVFunc                                                                                \
 };                                                                                        \
                                                                                           \
 
 
 #define PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(PCGG)                                  \
-    py::class_<Pyw##PCGG, GElement, std::unique_ptr<Pyw##PCGG, py::nodelete> >(cg, #PCGG) \
+    py::class_<Pyw##PCGG, GElement, Pyw##PCGG##Interface, std::unique_ptr<Pyw##PCGG, py::nodelete> >(cg, #PCGG) \
         .def(py::init<const GElementPtrArr&>(),                                           \
             py::arg("elements") = GElementPtrArr{},                                       \
             py::keep_alive<1, 2>())                                                       \
