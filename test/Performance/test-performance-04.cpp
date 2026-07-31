@@ -24,6 +24,7 @@ void test_performance_04() {
     config.primary_thread_busy_epoch_ = 500;
     config.primary_thread_empty_interval_ = 0;
     config.deliver_running_primary_thread_enable_ = true;
+    config.pipeline_wait_busy_epoch_ = 100;
     pipeline->setUniqueThreadPoolConfig(config);
 
     // 实现一个全连接

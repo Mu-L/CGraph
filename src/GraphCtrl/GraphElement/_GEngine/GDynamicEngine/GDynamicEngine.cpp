@@ -306,17 +306,12 @@ CVoid GDynamicEngine::prepareRun() {
 
 template<typename Pred>
 CBool GDynamicEngine::isFastFinished(Pred&& check) {
-    CBool result = false;
-    const auto epoch = thread_pool_->getConfig().pipeline_wait_busy_epoch_;
-    for (auto i = 0; i < epoch; i++) {
-        if (check()) {
-            result = true;
-            break;
-        }
+    auto epoch = thread_pool_->getConfig().pipeline_wait_busy_epoch_;
+    while (epoch-- > 0 && !check()) {
         CGRAPH_YIELD();
     }
 
-    return result;
+    return epoch >= 0;
 }
 
 CGRAPH_NAMESPACE_END
