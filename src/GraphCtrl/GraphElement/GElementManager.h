@@ -61,7 +61,6 @@ protected:
 
     /**
      * 构造执行引擎
-     * @param strategy
      * @return
      */
     CStatus initEngine();
@@ -77,7 +76,7 @@ protected:
      * 获取最大的并发数
      * @return
      */
-    CSize calcMaxParaSize();
+    CSize calcMaxParaSize() const;
 
     /**
      * 查看是否可以串行执行

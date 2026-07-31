@@ -28,7 +28,7 @@ public:
      * 修剪冗余的连边信息
      * @return
      */
-    CSize trim();
+    CSize trim() const;
 
 protected:
     explicit GRegion();

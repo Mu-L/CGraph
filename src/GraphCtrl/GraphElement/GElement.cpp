@@ -348,7 +348,7 @@ CStatus GElement::crashed(const CException& ex) const {
 }
 
 
-CIndex GElement::getThreadIndex() {
+CIndex GElement::getThreadIndex() const {
     CGRAPH_THROW_EXCEPTION_BY_CONDITION((nullptr == thread_pool_),    \
         this->getName() + " getThreadIndex with no thread pool")    // 理论不可能出现的情况
 

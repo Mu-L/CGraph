@@ -19,7 +19,7 @@ GCondition::GCondition() {
 CStatus GCondition::run() {
     CGRAPH_FUNCTION_BEGIN
 
-    CIndex index = this->choose();
+    const CIndex index = this->choose();
     if (internal::CGRAPH_CONDITION_LAST_INDEX == index
         && !this->children_.empty()) {
         // 如果返回-1，则直接执行最后一个条件（模仿default功能）

@@ -18,7 +18,7 @@ GCluster::GCluster() {
 
 CStatus GCluster::run() {
     CGRAPH_FUNCTION_BEGIN
-    for (GElementPtr element : this->children_) {
+    for (const GElementPtr element : this->children_) {
         status = element->fatProcessor(CFunctionType::RUN);
         CGRAPH_FUNCTION_CHECK_STATUS
     }

@@ -114,7 +114,7 @@ CBool GRegion::isSeparate(GElementCPtr a, GElementCPtr b) const {
 }
 
 
-CSize GRegion::trim() {
+CSize GRegion::trim() const {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CSize result = 0;
     if (manager_) {

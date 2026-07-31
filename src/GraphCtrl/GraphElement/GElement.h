@@ -102,7 +102,7 @@ public:
 
     /**
      * 设定绑定的线程id
-     * @param index，需要绑定的 thread id 信息
+     * @param index 需要绑定的 thread id 信息
      * @return
      * @notice 本接口仅保证绑定线程优先调度，但不保证最终一定在绑定线程上执行。若不了解调度机制，不建议使用本接口，否则可能导致运行时阻塞。
      */
@@ -242,7 +242,7 @@ protected:
      * @return
      * @notice 启动线程返回-1（CGRAPH_MAIN_THREAD_ID），辅助线程返回-2（CGRAPH_SECONDARY_THREAD_COMMON_ID），主线程返回 线程index
      */
-    CIndex getThreadIndex();
+    CIndex getThreadIndex() const;
 
     /**
      * 判断当前是否超时

@@ -76,7 +76,7 @@ GElementPtr GMutable::setThreadPoolEx(UThreadPoolPtr ptr) {
 }
 
 
-CVoid GMutable::setup() {
+CVoid GMutable::setup() const {
     for (auto* element : children_) {
         element->run_before_.clear();
         element->dependence_.clear();

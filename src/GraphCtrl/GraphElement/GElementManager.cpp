@@ -129,7 +129,7 @@ GElementManagerPtr GElementManager::setThreadPool(UThreadPoolPtr ptr) {
 }
 
 
-CSize GElementManager::calcMaxParaSize() {
+CSize GElementManager::calcMaxParaSize() const {
     CGRAPH_THROW_EXCEPTION_BY_CONDITION(!GMaxParaOptimizer::match(manager_elements_),
                                         "cannot calculate max parallel size within groups")
     return GMaxParaOptimizer::getMaxParaSize(manager_elements_);

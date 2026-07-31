@@ -33,7 +33,7 @@ protected:
      * @param ttl
      * @return
      */
-    CStatus spawn(const UTaskGroup& tasks, CMSec ttl = CGRAPH_MAX_BLOCK_TTL);
+    CStatus spawn(const UTaskGroup& tasks, CMSec ttl = CGRAPH_MAX_BLOCK_TTL) const;
 
 private:
     GNodeType node_type_ { GNodeType::BASIC };                    // 节点类型

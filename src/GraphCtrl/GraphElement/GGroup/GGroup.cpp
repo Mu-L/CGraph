@@ -17,7 +17,7 @@ GGroup::GGroup() {
 CStatus GGroup::init() {
     CGRAPH_FUNCTION_BEGIN
 
-    for (GElementPtr element : children_) {
+    for (const GElementPtr element : children_) {
         CGRAPH_ASSERT_NOT_NULL(element)
         status += element->fatProcessor(CFunctionType::INIT);
     }
@@ -31,7 +31,7 @@ CStatus GGroup::init() {
 CStatus GGroup::destroy() {
     CGRAPH_FUNCTION_BEGIN
 
-    for (GElementPtr element : children_) {
+    for (const GElementPtr element : children_) {
         CGRAPH_ASSERT_NOT_NULL(element)
         status += element->fatProcessor(CFunctionType::DESTROY);
     }
@@ -81,7 +81,7 @@ CVoid GGroup::dumpGroupLabelBegin(std::ostream& oss) {
 }
 
 
-CVoid GGroup::dumpGroupLabelEnd(std::ostream& oss) {
+CVoid GGroup::dumpGroupLabelEnd(std::ostream& oss) const {
     (void)(this);
     oss << "}\n";
 }
@@ -93,7 +93,7 @@ CBool GGroup::isSerializable() const {
      * 但是在 region和 multiCondition中，有针对性的判断
      */
     return std::all_of(children_.begin(), children_.end(),
-                       [](GElementPtr element) {
+                       [](const GElementPtr element) {
         return element->isSerializable();
     });
 }

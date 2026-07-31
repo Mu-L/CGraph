@@ -58,7 +58,7 @@ private:
      * @param oss
      * @return
      */
-    CVoid dumpGroupLabelEnd(std::ostream& oss);
+    CVoid dumpGroupLabelEnd(std::ostream& oss) const;
 
     /**
      * 判断两个element，是否相互独立

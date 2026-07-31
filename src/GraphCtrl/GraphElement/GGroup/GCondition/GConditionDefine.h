@@ -9,7 +9,6 @@
 #ifndef CGRAPH_GCONDITIONDEFINE_H
 #define CGRAPH_GCONDITIONDEFINE_H
 
-#include "../GGroupDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
 

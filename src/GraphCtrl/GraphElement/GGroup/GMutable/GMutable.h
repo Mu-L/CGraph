@@ -40,7 +40,7 @@ private:
      * 将数据进行恢复
      * @return
      */
-    CVoid setup();
+    CVoid setup() const;
 
     GElementPtr setThreadPoolEx(UThreadPoolPtr ptr) final;
 
