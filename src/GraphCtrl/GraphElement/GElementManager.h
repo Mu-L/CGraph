@@ -82,7 +82,7 @@ protected:
      * 查看是否可以串行执行
      * @return
      */
-    CBool checkSerializable();
+    CBool checkSerializable() const;
 
     /**
      * 剪裁多余的连边信息

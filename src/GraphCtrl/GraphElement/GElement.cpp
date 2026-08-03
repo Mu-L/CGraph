@@ -218,6 +218,37 @@ CStatus GElement::doAspect(const internal::GAspectType& aspectType, const CStatu
 }
 
 
+#ifdef _CGRAPH_LITE_MODE_ENABLE_
+CStatus GElement::fatProcessor(const CFunctionType& type) {
+    CGRAPH_FUNCTION_BEGIN
+    try {
+        switch (type) {
+            case CFunctionType::RUN: {
+                status = run();
+                CGRAPH_FUNCTION_CHECK_STATUS
+                break;
+            }
+            case CFunctionType::INIT: {
+                concerned_params_.clear();    // 仅需要记录这一轮使用到的 GParam 信息
+                status = init();
+                CGRAPH_FUNCTION_CHECK_STATUS
+                break;
+            }
+            case CFunctionType::DESTROY: {
+                status = destroy();
+                CGRAPH_FUNCTION_CHECK_STATUS
+                break;
+            }
+            default:
+                CGRAPH_RETURN_ERROR_STATUS("get function type error")
+        }
+    } catch (const CException& ex) {
+        status = crashed(ex);
+    }
+
+    CGRAPH_FUNCTION_END
+}
+#else
 CStatus GElement::fatProcessor(const CFunctionType& type) {
     CGRAPH_FUNCTION_BEGIN
 
@@ -284,6 +315,7 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
 
     CGRAPH_FUNCTION_END
 }
+#endif
 
 
 CStatus GElement::prepareRun() {

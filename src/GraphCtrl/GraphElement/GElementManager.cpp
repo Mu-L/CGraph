@@ -23,14 +23,14 @@ GElementManager::~GElementManager() {
 CStatus GElementManager::init() {
     CGRAPH_FUNCTION_BEGIN
 
-    for (auto element : manager_elements_) {
+    for (auto* element : manager_elements_) {
         CGRAPH_ASSERT_NOT_NULL(element)
     }
 
     status = initEngine();
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    for (GElementPtr element : manager_elements_) {
+    for (auto* element : manager_elements_) {
         status = element->fatProcessor(CFunctionType::INIT);
         CGRAPH_FUNCTION_CHECK_STATUS
         element->is_init_ = true;
@@ -43,7 +43,7 @@ CStatus GElementManager::init() {
 CStatus GElementManager::destroy() {
     CGRAPH_FUNCTION_BEGIN
 
-    for (GElementPtr element : manager_elements_) {
+    for (auto* element : manager_elements_) {
         status = element->fatProcessor(CFunctionType::DESTROY);
         CGRAPH_FUNCTION_CHECK_STATUS
         element->is_init_ = false;
@@ -136,7 +136,7 @@ CSize GElementManager::calcMaxParaSize() const {
 }
 
 
-CBool GElementManager::checkSerializable() {
+CBool GElementManager::checkSerializable() const {
     if (engine_type_ != GEngineType::DYNAMIC) {
         return false;    // 目前仅支持动态引擎的执行方式
     }

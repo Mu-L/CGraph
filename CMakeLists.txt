@@ -31,6 +31,11 @@ option(CGRAPH_BUILD_PERFORMANCE_TESTS "Enable build performance tests" OFF)
 # 副作用是GParam中的锁无法递归上锁，一般情况下可忽略影响
 # add_definitions(-D_CGRAPH_GPARAM_RWLOCK_ENABLE_)
 
+# 如果开启此宏定义，则执行过程中，仅正常执行 element 的 init/run/destroy 方法
+# 无 循环loop、切面aspect、退出cancel、暂停Suspend 等功能
+# 主要用于 简单场景 和 性能测试，一般情况不建议开启
+# add_definitions(-D_CGRAPH_LITE_MODE_ENABLE_)
+
 # add CGraph environment info
 include(cmake/CGraph-env-include.cmake)
 
