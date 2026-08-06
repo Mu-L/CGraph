@@ -9,9 +9,10 @@
 #ifndef CGRAPH_UATOMICQUEUE_H
 #define CGRAPH_UATOMICQUEUE_H
 
-#include <memory>
 #include <mutex>
 #include <queue>
+#include <utility>
+#include <vector>
 #include <condition_variable>
 
 #include "../UThreadPoolDefine.h"
@@ -31,7 +32,7 @@ public:
     CVoid waitPop(T& value) {
         CGRAPH_UNIQUE_LOCK lk(mutex_);
         cv_.wait(lk, [this] { return !queue_.empty(); });
-        value = std::move(*queue_.front());
+        value = std::move(queue_.front());
         queue_.pop();
     }
 
@@ -45,7 +46,7 @@ public:
         CBool result = false;
         if (!queue_.empty() && mutex_.try_lock()) {
             if (!queue_.empty()) {
-                value = std::move(*queue_.front());
+                value = std::move(queue_.front());
                 queue_.pop();
                 result = true;
             }
@@ -66,7 +67,7 @@ public:
         CBool result = false;
         if (!queue_.empty() && mutex_.try_lock()) {
             while (!queue_.empty() && maxPoolBatchSize-- > 0) {
-                values.emplace_back(std::move(*queue_.front()));
+                values.emplace_back(std::move(queue_.front()));
                 queue_.pop();
                 result = true;
             }
@@ -79,35 +80,24 @@ public:
 
     /**
      * 阻塞式等待弹出
-     * @return
+     * @param value
+     * @param ms
+     * @return 是否成功弹出数据
      */
-    std::unique_ptr<T> popWithTimeout(const CMSec ms) {
+    CBool popWithTimeout(T& value, const CMSec ms) {
         CGRAPH_UNIQUE_LOCK lk(mutex_);
         if (!cv_.wait_for(lk, std::chrono::milliseconds(ms),
                           [this] { return (!queue_.empty()) || (!ready_flag_); })) {
-            return nullptr;
+            return false;
         }
 
         if (queue_.empty() || !ready_flag_) {
-            return nullptr;
+            return false;
         }
 
-        std::unique_ptr<T> result = std::move(queue_.front());
+        value = std::move(queue_.front());
         queue_.pop();    // 如果等成功了，则弹出一个信息
-        return result;
-    }
-
-
-    /**
-     * 非阻塞式等待弹出
-     * @return
-     */
-    std::unique_ptr<T> tryPop() {
-        CGRAPH_LOCK_GUARD lk(mutex_);
-        if (queue_.empty()) { return std::unique_ptr<T>(); }
-        std::unique_ptr<T> ptr = std::move(queue_.front());
-        queue_.pop();
-        return ptr;
+        return true;
     }
 
 
@@ -116,11 +106,9 @@ public:
      * @param value
      */
     CVoid push(T&& value) {
-        std::unique_ptr<typename std::remove_reference<T>::type>     \
-                task(c_make_unique<typename std::remove_reference<T>::type>(std::forward<T>(value)));
         while (true) {
             if (mutex_.try_lock()) {
-                queue_.push(std::move(task));
+                queue_.emplace(std::move(value));
                 mutex_.unlock();
                 break;
             }
@@ -168,8 +156,8 @@ public:
     CGRAPH_NO_ALLOWED_COPY(UAtomicQueue)
 
 private:
-    std::queue<std::unique_ptr<T>> queue_ {};    // 任务队列
-    CBool ready_flag_ { true };                  // 执行标记，主要用于快速释放 destroy 逻辑中，多个辅助线程等待的状态
+    std::queue<T> queue_ {};     // 任务队列
+    CBool ready_flag_ { true };  // 执行标记，主要用于快速释放 destroy 逻辑中，多个辅助线程等待的状态
 };
 
 CGRAPH_NAMESPACE_END

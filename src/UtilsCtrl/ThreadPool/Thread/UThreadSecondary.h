@@ -94,10 +94,11 @@ protected:
      */
     CVoid waitRunTask(const CMSec ms) {
         is_running_ = false;
-        const auto& task = pool_task_queue_->popWithTimeout(ms);
+        UTask task;
+        const CBool result = pool_task_queue_->popWithTimeout(task, ms);
         is_running_ = true;
-        if (task) {
-            runTask(*task);
+        if (result) {
+            runTask(task);
         }
     }
 
