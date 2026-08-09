@@ -127,6 +127,27 @@ CStatus UThreadPool::submit(CGRAPH_DEFAULT_CONST_FUNCTION_REF func, const CMSec 
 }
 
 
+CVoid UThreadPool::execute(const UTask* task, const CIndex index) {
+    envokeTask(UTask(task), index);
+}
+
+
+CVoid UThreadPool::envokeTask(UTask&& task, const CIndex index) {
+    const CIndex realIndex = dispatch(index);
+
+    if (likely(realIndex >= 0 && realIndex < config_.default_thread_size_)) {
+        primary_threads_[realIndex]->pushTask(std::move(task));
+    } else if (CGRAPH_LONG_TIME_TASK_STRATEGY == realIndex) {
+        priority_task_queue_.push(std::move(task), CGRAPH_LONG_TIME_TASK_STRATEGY);
+    } else if (CGRAPH_TRIGGER_ALL_THREAD_STRATEGY == realIndex) {
+        task_queue_.push(std::move(task));
+        (void)wakeupAllThread();
+    } else {
+        task_queue_.push(std::move(task));
+    }
+}
+
+
 CIndex UThreadPool::getThreadIndex(const CSize tid) {
     int index = CGRAPH_SECONDARY_THREAD_COMMON_ID;
     const auto result = thread_record_map_.find(tid);

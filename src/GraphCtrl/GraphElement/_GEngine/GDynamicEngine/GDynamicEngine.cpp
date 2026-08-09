@@ -95,6 +95,7 @@ CVoid GDynamicEngine::analysisDagType() {
         analysisParallelMatrix();
     } else {
         dag_type_ = internal::GEngineDagType::COMMON;
+        makeCommonTask();
     }
 }
 
@@ -121,6 +122,16 @@ CVoid GDynamicEngine::analysisParallelMatrix() {
 }
 
 
+CVoid GDynamicEngine::makeCommonTask() {
+    for (auto* element : total_element_arr_) {
+        CGRAPH_DELETE_PTR(element->run_task_)
+        element->run_task_ = new UTask([this, element] {
+            this->innerExec(element);
+        });
+    }
+}
+
+
 CVoid GDynamicEngine::process(GElementPtr element, const CBool affinity) {
     if (unlikely(cur_status_.isErr())) {
         return;
@@ -130,8 +141,7 @@ CVoid GDynamicEngine::process(GElementPtr element, const CBool affinity) {
         // 如果 affinity=true，表示用当前的线程，执行这个逻辑。以便增加亲和性
         innerExec(element);
     } else {
-        thread_pool_->execute([this, element] {
-            this->innerExec(element); }, element->binding_index_);
+        thread_pool_->execute(element->run_task_, element->binding_index_);
     }
 }
 
@@ -234,7 +244,7 @@ CVoid GDynamicEngine::parallelRunAll() {
             }
         } else {
             // 仅有一个任务的情况，无法使用 executeWithTid 函数，故走这边的逻辑
-            const auto& element = curArr.front();
+            auto* element = curArr.front();
             thread_pool_->execute([this, element] {
                 parallelRunOne(element); }, element->binding_index_);
         }

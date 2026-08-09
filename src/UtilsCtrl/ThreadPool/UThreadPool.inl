@@ -54,25 +54,15 @@ auto UThreadPool::commitWithPriority(const FunctionType& func, int priority)
 }
 
 
-template<typename FunctionType>
+template<typename FunctionType,
+    typename std::enable_if<!std::is_same<typename std::decay<FunctionType>::type, UTask>::value, int>::type>
 CVoid UThreadPool::execute(FunctionType&& task, const CIndex index) {
-    const CIndex realIndex = dispatch(index);
-
-    if (likely(realIndex >= 0 && realIndex < config_.default_thread_size_)) {
-        primary_threads_[realIndex]->pushTask(UTask(std::forward<FunctionType>(task)));
-    } else if (CGRAPH_LONG_TIME_TASK_STRATEGY == realIndex) {
-        priority_task_queue_.push(UTask(std::forward<FunctionType>(task)), CGRAPH_LONG_TIME_TASK_STRATEGY);
-    } else if (CGRAPH_TRIGGER_ALL_THREAD_STRATEGY == realIndex) {
-        task_queue_.push(UTask(std::forward<FunctionType>(task)));
-        (void)wakeupAllThread();
-    } else {
-        task_queue_.push(UTask(std::forward<FunctionType>(task)));
-    }
+    envokeTask(UTask(std::forward<FunctionType>(task)), index);
 }
 
 
 template<typename FunctionType>
-CVoid UThreadPool::executeWithTid(FunctionType&& task, CIndex tid, CBool enable, CBool lockable) {
+CVoid UThreadPool::executeWithTid(FunctionType&& task, const CIndex tid, const CBool enable, const CBool lockable) {
     if (likely(tid >= 0 && tid < config_.default_thread_size_)) {
         primary_threads_[tid]->pushTask(UTask(std::forward<FunctionType>(task)), enable, lockable);
     } else {

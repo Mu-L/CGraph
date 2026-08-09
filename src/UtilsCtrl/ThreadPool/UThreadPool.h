@@ -106,8 +106,18 @@ public:
      * @param task
      * @param index
      */
-    template<typename FunctionType>
+    template<typename FunctionType,
+        typename std::enable_if<!std::is_same<typename std::decay<FunctionType>::type, UTask>::value, int>::type = 0>
     CVoid execute(FunctionType&& task,
+                  CIndex index = CGRAPH_DEFAULT_TASK_STRATEGY);
+
+    /**
+     * 异步执行已封装的任务。队列仅借用 task 中的执行内容，不接管其生命周期。
+     * task 必须存活到本次异步执行结束，并且可以被重复提交。
+     * @param task
+     * @param index
+     */
+    CVoid execute(const UTask* task,
                   CIndex index = CGRAPH_DEFAULT_TASK_STRATEGY);
 
     /**
@@ -196,6 +206,13 @@ protected:
      * 增/删 操作，仅针对secondary类型线程生效
      */
     CVoid monitor();
+
+    /**
+     * 将任务投递到线程池内部
+     * @param task
+     * @param index
+     */
+    CVoid envokeTask(UTask&& task, CIndex index);
 
     CGRAPH_NO_ALLOWED_COPY(UThreadPool)
 

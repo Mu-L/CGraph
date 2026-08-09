@@ -455,10 +455,11 @@ private:
     CBool is_marco_ { false };                                                // 微任务
 
     /** 执行期间相关信息 */
-    GElementParamMap local_params_;                                           // 用于记录当前element的内部参数
+    GElementParamMap local_params_ {};                                        // 用于记录当前element的内部参数
     GAspectManagerPtr aspect_manager_ { nullptr };                            // 整体流程的切面管理类
     UThreadPoolPtr thread_pool_ { nullptr };                                  // 用于执行的线程池信息
     GPerfInfo* perf_info_ { nullptr };                                        // 用于perf的信息
+    UTask* run_task_ { nullptr };                                             // 用于记录 调度执行函数
     CBool is_prepared_ { false };                                             // 判断是否已经执行过 prepareRun() 方法
 
     /** 图相关信息 */
@@ -469,8 +470,8 @@ private:
     std::vector<GElement *> children_ {};                                     // 子节点，适用于group类型
 
     /** 异步执行相关信息 */
-    std::future<CStatus> async_result_;                                       // 用于记录当前节点的异步执行情况
-    UCvMutex suspend_locker_;                                                 // 控制停止执行锁信息
+    std::future<CStatus> async_result_ {};                                    // 用于记录当前节点的异步执行情况
+    UCvMutex suspend_locker_ {};                                              // 控制停止执行锁信息
 
     friend class GNode;
     friend class GGroup;

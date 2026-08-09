@@ -43,6 +43,12 @@ protected:
     CVoid analysisParallelMatrix();
 
     /**
+     * 创建 common run 的情况下，element对应的任务
+     * @return
+     */
+    CVoid makeCommonTask();
+
+    /**
      * 动态图运行
      * @param
      * @return
