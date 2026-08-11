@@ -13,11 +13,11 @@
 
 CGRAPH_NAMESPACE_BEGIN
 template<typename FunctionType>
-auto UThreadPool::commit(const FunctionType& func, CIndex index)
--> std::future<decltype(std::declval<FunctionType>()())> {
-    using ResultType = decltype(std::declval<FunctionType>()());
+auto UThreadPool::commit(FunctionType&& func, CIndex index)
+-> std::future<decltype(std::declval<typename std::decay<FunctionType>::type>()())> {
+    using ResultType = decltype(std::declval<typename std::decay<FunctionType>::type>()());
 
-    std::packaged_task<ResultType()> task(func);
+    std::packaged_task<ResultType()> task(std::forward<FunctionType>(func));
     std::future<ResultType> result(task.get_future());
 
     execute(std::move(task), index);
@@ -26,10 +26,10 @@ auto UThreadPool::commit(const FunctionType& func, CIndex index)
 
 
 template<typename FunctionType>
-auto UThreadPool::commitWithTid(const FunctionType& func, CIndex tid, CBool enable, CBool lockable)
--> std::future<decltype(std::declval<FunctionType>()())> {
-    using ResultType = decltype(std::declval<FunctionType>()());
-    std::packaged_task<ResultType()> task(std::move(func));
+auto UThreadPool::commitWithTid(FunctionType&& func, CIndex tid, CBool enable, CBool lockable)
+-> std::future<decltype(std::declval<typename std::decay<FunctionType>::type>()())> {
+    using ResultType = decltype(std::declval<typename std::decay<FunctionType>::type>()());
+    std::packaged_task<ResultType()> task(std::forward<FunctionType>(func));
     std::future<ResultType> result(task.get_future());
 
     executeWithTid(std::move(task), tid, enable, lockable);

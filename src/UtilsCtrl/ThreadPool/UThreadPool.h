@@ -70,9 +70,9 @@ public:
      * @return
      */
     template<typename FunctionType>
-    auto commit(const FunctionType& func,
+    auto commit(FunctionType&& func,
                 CIndex index = CGRAPH_DEFAULT_TASK_STRATEGY)
-    -> std::future<decltype(std::declval<FunctionType>()())>;
+    -> std::future<decltype(std::declval<typename std::decay<FunctionType>::type>()())>;
 
     /**
      * 向特定的线程id中，提交任务信息
@@ -84,8 +84,8 @@ public:
      * @return
      */
     template<typename FunctionType>
-    auto commitWithTid(const FunctionType& func, CIndex tid, CBool enable, CBool lockable)
-    -> std::future<decltype(std::declval<FunctionType>()())>;
+    auto commitWithTid(FunctionType&& func, CIndex tid, CBool enable, CBool lockable)
+    -> std::future<decltype(std::declval<typename std::decay<FunctionType>::type>()())>;
 
     /**
      * 根据优先级，执行任务
