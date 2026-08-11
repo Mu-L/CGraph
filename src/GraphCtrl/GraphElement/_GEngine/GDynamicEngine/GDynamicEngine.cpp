@@ -18,6 +18,7 @@ CStatus GDynamicEngine::setup(const GSortedGElementPtrSet& elements) {
      * 3. 计算element的结构类型
      * 4. 分析当前dag类型信息
      */
+    CGRAPH_ASSERT_NOT_NULL(thread_pool_);
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!GEngine::isDag(elements),
                                             "it is not a dag struct");
     mark(elements);
@@ -67,6 +68,7 @@ CVoid GDynamicEngine::mark(const GSortedGElementPtrSet& elements) {
     total_element_arr_.clear();
     front_element_arr_.clear();
     total_end_size_ = 0;
+    wait_busy_epoch_ = thread_pool_->getConfig().pipeline_wait_busy_epoch_;
 
     for (GElementPtr element : elements) {
         if (element->run_before_.empty()) {
@@ -316,7 +318,7 @@ CVoid GDynamicEngine::prepareRun() {
 
 template<typename Pred>
 CBool GDynamicEngine::isFastFinished(Pred&& check) {
-    auto epoch = thread_pool_->getConfig().pipeline_wait_busy_epoch_;
+    auto epoch = wait_busy_epoch_;
     while (epoch-- > 0 && !check()) {
         CGRAPH_YIELD();
     }

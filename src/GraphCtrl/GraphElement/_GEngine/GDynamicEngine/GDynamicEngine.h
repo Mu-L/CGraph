@@ -126,6 +126,7 @@ private:
     std::atomic<CSize> parallel_run_num_ {0};                                         // 纯并行时，执行的个数信息
     GElementPtrMat2D parallel_element_matrix_ {};                                        // 纯并行时，记录分解后的数据
     internal::GEngineDagType dag_type_ = { internal::GEngineDagType::COMMON };           // 当前元素的排布形式
+    CInt wait_busy_epoch_ {0};                                                           // dag执行结束前，轮询等待的次数
 
     UCvMutex locker_;
     std::mutex status_lock_;
