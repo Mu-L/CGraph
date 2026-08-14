@@ -241,7 +241,7 @@ private:
 protected:
     CBool done_;                                                         // 线程状态标记
     CBool is_init_;                                                      // 标记初始化状态
-    std::atomic<bool> is_running_;                                       // 是否正在执行
+    std::atomic<bool> is_running_ { false };                          // 是否正在执行
     CInt type_ = 0;                                                      // 用于区分线程类型（主线程、辅助线程）
     CULong total_task_num_ = 0;                                          // 处理的任务的数字
 

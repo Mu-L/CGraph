@@ -295,19 +295,17 @@ CVoid UThreadPool::monitor() {
 
 CSize UThreadPool::wakeupAllThread() {
     CSize size = 0;
-    if (wakeup_mutex_.try_lock()) {
-        for (auto* pt : primary_threads_) {
-            if (pt->wakeup()) {
-                ++size;
-            }
+    CGRAPH_LOCK_GUARD lock(wakeup_mutex_);
+    for (auto* pt : primary_threads_) {
+        if (pt->wakeup()) {
+            ++size;
         }
+    }
 
-        for (const auto& st : secondary_threads_) {
-            if (st->wakeup()) {
-                ++size;
-            }
+    for (const auto& st : secondary_threads_) {
+        if (st->wakeup()) {
+            ++size;
         }
-        wakeup_mutex_.unlock();
     }
 
     return size;
