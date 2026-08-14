@@ -24,6 +24,7 @@ def tutorial_aspect():
     pipeline.registerGElement(a, set(), 'nodeA')
     pipeline.registerGElement(b_cluster, {a}, 'regionB')
     pipeline.registerGElement(c, {b_cluster}, 'nodeC')
+
     pipeline.process()
 
 

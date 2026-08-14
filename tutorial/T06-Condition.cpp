@@ -36,7 +36,7 @@ void tutorial_condition() {
     status += pipeline->registerGElement<MyCondition>(&b_condition, {a}, "conditionB", 1);
     status += pipeline->registerGElement<MyReadParamNode>(&c, {b_condition}, "readNodeC", 1);
     status += pipeline->registerGElement<MyParamCondition>(&d_condition, {c}, "conditionD", 1);
-    if (!status.isOK()) {
+    if (!status) {
         return;
     }
 

@@ -105,8 +105,8 @@
 
 * 通过uv安装(Linux/MacOS/Windows)
   ```shell
-  $ uv init cgraph_env              # 通过uv 创建一个名为 cgraph_env 的环境
-  $ cd cgraph_env 
-  $ uv add "pycgraph @ git+https://github.com/ChunelFeng/CGraph.git@main#subdirectory=python" --marker "sys_platform == 'linux'"    # 添加 pycgraph 依赖
-  $ python3 -c "import pycgraph"    # 验证 pycgraph 成功安装
+  $ uv init pycgraph_env                  # 通过uv 创建一个名为 pycgraph_env 项目目录
+  $ cd pycgraph_env 
+  $ uv add pycgraph                       # 添加 pycgraph 依赖
+  $ uv run python -c "import pycgraph"    # 验证 pycgraph 成功安装
   ```

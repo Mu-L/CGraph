@@ -22,7 +22,7 @@ def tutorial_timeout():
     pipeline.registerGElement(d, {b, c}, "nodeD")
 
     status: CStatus = pipeline.process()
-    if status.isOK():
+    if status:
         print("---- T22-timeout.py pipeline run finish \n")
 
     c.setTimeout(300)
@@ -34,7 +34,7 @@ def tutorial_timeout():
     c.setTimeout(0)
     print("---- set [{0}] no timeout, rerun pipeline again".format(c.getName()))
     status = pipeline.process()
-    if status.isOK():
+    if status:
         print("---- T22-timeout.py pipeline run finish again")
 
 

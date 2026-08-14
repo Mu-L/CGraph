@@ -22,10 +22,11 @@ def tutorial_simple():
     pipeline.registerGElement(d, {b, c}, "nodeD")
 
     status: CStatus = pipeline.init()
-    if status.isErr():
+    if not status:
         # please check api return status
         # ret_code == 0 is ok, default
         # ret_code < 0 means error, ex: return CStatus(-1, "my error info")
+        # never try ret_code > 0 please
         print('pipeline init failed, error code is {0}, error info is {1}'.format(
             status.getCode(), status.getInfo()))
         return

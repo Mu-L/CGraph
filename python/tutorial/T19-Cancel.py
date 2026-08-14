@@ -28,14 +28,12 @@ def tutorial_cancel():
     result: StdFutureCStatus = pipeline.asyncRun()
     print("pipeline async run first time, BEGIN.")
     result.wait()
-    print("pipeline async run first time, FINISH.")
-    print("======================")
+    print("pipeline async run first time, FINISH ======")
 
     result = pipeline.asyncRun()
     time.sleep(1.5)
     pipeline.cancel()
-    print("pipeline async run second time, CANCEL.")
-    print("======================")
+    print("pipeline async run second time, CANCEL ======")
     result.wait()
 
     pipeline.destroy()

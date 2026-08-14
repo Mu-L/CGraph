@@ -22,7 +22,7 @@ void tutorial_param() {
     status += pipeline->registerGElement<MyWriteParamNode>(&d, {a}, "writeNodeD", 2);    // 对param中的iValue值+1，循环执行2次
     status += pipeline->registerGElement<MyReadParamNode>(&e, {a}, "readNodeE");
     status += pipeline->registerGElement<MyWriteParamNode>(&f, {b, c, d, e}, "writeNodeF");
-    if (!status.isOK()) {
+    if (!status) {
         return;    // 使用时，请对所有CGraph接口的返回值做判定。本例子中省略
     }
 

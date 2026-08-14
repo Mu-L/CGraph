@@ -24,6 +24,7 @@ def tutorial_aspect_param():
     pipeline.registerGElement(b, {a}, 'nodeB')
     pipeline.registerGElement(c, {b}, 'nodeC')
     pipeline.registerGElement(d, {c}, 'nodeD')
+
     pipeline.process()
 
 

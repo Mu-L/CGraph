@@ -35,5 +35,6 @@ Contributors:
 - [guanquanchen](https://github.com/guanquanchen)
 - [Linyu](https://github.com/weijinglin)
 - [billlib](https://github.com/billlib)
+- [SimonFoobar648](https://github.com/SimonFoobar648)
 
 感谢以上朋友，为CGraph项目做出的贡献，排名以贡献时间前后为顺序。

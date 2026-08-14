@@ -5,6 +5,7 @@ cc_library(
                 "MyGDaemon/**/*.h",
                 "MyGEvent/**/*.h",
                 "MyGMutable/**/*.h",
+                "MyGSome/**/*.h",
                 "MyGNode/**/*.h",
                 "MyParams/**/*.h",]),
     visibility = ["//visibility:public"],
@@ -40,6 +41,7 @@ CGRAPH_TUTORIAL_LIST = [
          "T26-Mutable",
          "T27-Trim",
          "T28-Stage",
+         "T29-Storage",
         ]
 
 [

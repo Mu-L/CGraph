@@ -11,7 +11,6 @@
 
 #include <algorithm>
 
-#include "UThreadObject.h"
 #include "UThreadPoolDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
