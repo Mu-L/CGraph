@@ -426,10 +426,11 @@ if __name__ == '__main__':
 [2026.05.10 - v3.2.4 - Chunel]
 * 优化 `pycgraph` 功能
 
-[2026.08.07 - v3.2.5 - Chunel]
+[2026.08.15 - v3.2.5 - Chunel]
 * 优化调度性能
 * 优化 `pycgraph` 功能
 * 提供 lite 运行模式
+* 修改 `GSome` 使用方式
 
 </details>
 
