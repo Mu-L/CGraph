@@ -98,6 +98,8 @@ int main() {
 > <b>Python 版本</b>
 
 ```python
+# pip install pycgraph
+
 import time
 from datetime import datetime
 
